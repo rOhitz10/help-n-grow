@@ -21,6 +21,7 @@ import ReceiveRequest from './Dashborad_Components/Sub_component/ReceiveRequest'
 import ForgotPassword from './Components/ForgotPassword';
 import ResetPassword from './Components/ResetPassword';
 import UpdateProfile from './Dashborad_Components/updateProfile';
+import NotFoundPage from './utils/NotFoundPage';
 
 function App() {
   return (
@@ -37,6 +38,8 @@ function App() {
         <Route path="r/signup/:sponsorEpin" element={<ReferalSignUp/>} />
         <Route path="forgot/password" element={<ForgotPassword/>}/>
         <Route path="reset/password/:token" element={<ResetPassword/>} />
+
+        <Route path="*" element={<NotFoundPage />} />
 
         {/* Protected User Dashboard Routes */}
         <Route element={<PrivateRoutes />}>

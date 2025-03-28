@@ -5,6 +5,7 @@ import { FaArrowCircleRight } from 'react-icons/fa';
 import axios from 'axios';
 import { useAuth } from '../AuthContext';
 import {jwtDecode} from 'jwt-decode';
+import { TailSpin } from 'react-loader-spinner';
 
 const DashHome = () => {
   const { logout } = useAuth();
@@ -109,7 +110,13 @@ const DashHome = () => {
   }, []);
 
   // Loading and error handling
-  if (loading) return <div className="p-8 text-center">Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <TailSpin color="#00BFFF" height={80} width={80} />
+      </div>
+    );
+  }
   if (error) return <div className="p-8 text-center text-red-500">{error}</div>;
 
   return (

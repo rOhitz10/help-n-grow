@@ -3,6 +3,10 @@ import { useState,useRef,useEffect } from 'react';
 import Sidebar from '../Sidebar';
 import { FaArrowCircleRight } from 'react-icons/fa';
 import Header from '../Header';
+import { jwtDecode } from 'jwt-decode';
+
+
+
 
 
 function SendRequest() {
@@ -14,11 +18,39 @@ function SendRequest() {
   const token = localStorage.getItem('token');
   const [sendData, setSendData] = useState(null);
   // const [sendError, setSendError] = useState(null);
-
+  
   const receiverId = sendData?._id || null;
   const epin = sendData?.epin || ''; // Ensure epin exists before usage
-
-
+  
+  const [level, setLevel] = useState(null);
+  
+  useEffect(() => {
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setLevel(decoded.level); // Store level in state
+      } catch (error) {
+          console.error("Failed to decode token:", error);
+        }
+      }
+    }, [token]);
+    
+    const levelToAmount = {
+      0: "1000",
+      1: "1300",
+      2: "2500",
+      3: "5000",
+      4: "10000",
+      5: "20000",
+      6: "40000",
+      7: "80000",
+      8: "160000",
+      9: "320000",
+    };
+    const getAmountByLevel = (userLevel) => {
+      return levelToAmount[userLevel] || "0"; // Default if level not found
+    };
+    
     // Handle menu bar toggling 
     const handleClick = () => setMenuBar(!menuBar);
 
@@ -72,10 +104,11 @@ useEffect(() => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
-        { epin : epin }, // Pass epin as query parameter
+          params: {
+            epin: epin
+          }
+        }
       );
-
       setFinancialDetails(response.data);
       setView(true);
     } catch (error) {
@@ -197,13 +230,14 @@ useEffect(() => {
               ✖
             </button>
             <h2 className="text-2xl font-semibold mb-4">Details for {sendData?.name}</h2>
+            <p><strong>Amount:</strong> {getAmountByLevel(level)}</p>
             <p><strong>Receiver ID:</strong> {sendData?._id}</p>
             <p><strong>Email:</strong> {sendData?.email}</p>
+            <p ><strong>Mobile:</strong> {financialDetails.phoneNumber}</p>
 
             {financialDetails && (
               <div className="mt-4">
-                <p><strong>Mobile:</strong> {financialDetails.phoneNumber}</p>
-                <p><strong>Financial Details:</strong></p>
+                <p className='my-2'><strong>Financial Details:</strong></p>
                 <p><strong>AccountHolderName:</strong> {financialDetails.financialDetails.accountHolderName}</p>
                 <p><strong>AccountNumber:</strong> {financialDetails.financialDetails.accountNo}</p>
                 <p><strong>Bank Name:</strong> {financialDetails.financialDetails.bankName}</p>

@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar"
 import { FaArrowCircleRight } from "react-icons/fa";
 import Header from './Header';
 import axios from 'axios';
+import { TailSpin } from 'react-loader-spinner';
 
 function MyTeam() {
  
@@ -54,8 +55,14 @@ function MyTeam() {
     fetchData();
   }, [sponsorId]); // Run this effect when sponsorId changes
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}:no downline found</div>;
+if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <TailSpin color="#00BFFF" height={80} width={80} />
+      </div>
+    );
+  } 
+   if (error) return <div>{error}:no downline found</div>;
 
   
  

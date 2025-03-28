@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import { decode } from 'punycode';
 
 const AuthContext = createContext();
 
@@ -11,6 +12,7 @@ export const AuthProvider = ({ children }) => {
   const validateToken = (token) => {
     try {
       const decoded = jwtDecode(token);
+      
       const currentTime = Date.now() / 1000; // Convert to seconds
       return decoded.exp > currentTime; // Check if token is not expired
     } catch (error) {
