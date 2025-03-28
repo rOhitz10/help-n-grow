@@ -5,6 +5,8 @@ import Header from './Header';
 import axios from 'axios';
 import { useAuth } from '../AuthContext';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { TailSpin } from 'react-loader-spinner';
+import { useNavigate } from 'react-router-dom';
 
 const LevelCard = ({ node, onClick }) => {
   const { name, epin, children } = node;
@@ -93,12 +95,14 @@ const LevelCard = ({ node, onClick }) => {
 function LevelTree() {
   const [menuBar, setMenuBar] = useState(false);
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNode, setSelectedNode] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef(null);
   const sidebarRef = useRef(null);
   const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setMenuBar((prev) => !prev); // Toggle the menuBar state
@@ -127,6 +131,8 @@ function LevelTree() {
         if (error.response && error.response.status === 401) {
           logout();
         }
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -156,6 +162,14 @@ function LevelTree() {
     setSelectedNode(null);
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <TailSpin color="#00BFFF" height={80} width={80} />
+      </div>
+    );
+  }
+ 
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}

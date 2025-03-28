@@ -384,6 +384,7 @@ exports.clientFinancialDetails = async(req,res) =>{
 
     const  {epin}  = req.query;
     
+  
     
     try {
         

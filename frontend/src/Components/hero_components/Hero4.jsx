@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaAirbnb } from "react-icons/fa";
-import Marque from "../Marque";
+
 import Avatar from 'react-avatar';
 
 

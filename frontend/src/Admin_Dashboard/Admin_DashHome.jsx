@@ -4,6 +4,7 @@ import { FaArrowCircleRight, FaArrowCircleLeft } from 'react-icons/fa'; // Added
 import axios from 'axios';
 import AdminSidebar from './AdminSidebar';
 import { useAuth } from '../AuthContext';
+import { TailSpin } from 'react-loader-spinner';
 
 const DashHome = () => {
   const { logout } = useAuth();
@@ -78,8 +79,14 @@ const DashHome = () => {
   }, [sponsorId]);
 
   // Loading and error handling
-  if (loading) return <div className="p-8 text-center">Loading...</div>;
-  if (error) return <div className="p-8 text-center text-red-500">{error}</div>;
+ if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <TailSpin color="#00BFFF" height={80} width={80} />
+      </div>
+    );
+  }
+    if (error) return <div className="p-8 text-center text-red-500">{error}</div>;
 
   return (
     <div className="flex h-screen bg-gray-100">
